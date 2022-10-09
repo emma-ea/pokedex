@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'core/ui/home.dart';
+import 'core/scoped_model/main.dart';
 
 void main() {
-  runApp(const PokedexApp());
+  runApp(PokedexApp());
 }
 
 class PokedexApp extends StatelessWidget {
-  const PokedexApp({super.key});
+  PokedexApp({super.key});
+
+  final MainScopeModel _model = MainScopeModel();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,10 @@ class PokedexApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: ScopedModel<MainScopeModel>(
+        model: _model,
+        child: HomePage(model:_model),
+      ),
     );
   }
 }
