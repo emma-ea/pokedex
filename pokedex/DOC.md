@@ -2,15 +2,34 @@
 
 pokedex app
 
-## Getting Started
+Pokedex app uses scoped model package to handle all state data of the application. From there API Requests are made using the http package. Favourite pokemons are cached by storing the URLs of the pokemon endpoints and fetched when the user runs the app.
 
-This project is a starting point for a Flutter application.
+## Dependencies
 
-A few resources to get you started if this is your first Flutter project:
+### Network requests
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+http: ^0.13.5
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### State management
+
+scoped_model: ^2.0.0
+
+### UI
+
+flutter_svg: ^1.1.5
+
+cached_network_image: ^3.2.2
+
+### Local Cache
+
+hive: ^2.2.3
+
+hive_flutter: ^1.1.0
+
+### Internet Connectivity
+
+connectivity_plus: ^2.3.9
+
+### Service Locator
+
+get_it: ^7.2.0
