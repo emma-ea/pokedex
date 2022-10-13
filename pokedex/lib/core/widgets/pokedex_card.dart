@@ -23,7 +23,7 @@ class PokedexCard extends StatelessWidget {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(5))),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
               width: double.infinity,
@@ -31,22 +31,22 @@ class PokedexCard extends StatelessWidget {
               color: PokedexFormat.getColor(pokedex.id),
               child: ClipRRect(
                   child: PokedexImageWidget(id: pokedex.id, url: url))),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPokeId(pokedex.id),
-              const SizedBox(
-                height: 2,
-              ),
-              _buildPokeName(pokedex.name),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildPokedexTypes(),
-              const SizedBox(
-                height: 5,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildPokeId(pokedex.id),
+                _buildPokeName(pokedex.name),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildPokedexTypes(),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+              ],
+            ),
           ),
         ],
       ),
@@ -81,26 +81,7 @@ class PokedexCard extends StatelessWidget {
         fontSize: 12,
         color: AppColors.dimGray,
       ),
-    );
+    ).space(bottom: 4);
   }
-
-  // _buildPokeImage(url) {
-  //   return Image.network(
-  //     url,
-  //     fit: BoxFit.fill,
-  //     loadingBuilder: (BuildContext context, Widget child,
-  //         ImageChunkEvent? loadingProgress) {
-  //       if (loadingProgress == null) return child;
-  //       return Center(
-  //         child: CircularProgressIndicator(
-  //           value: loadingProgress.expectedTotalBytes != null
-  //               ? loadingProgress.cumulativeBytesLoaded /
-  //                   loadingProgress.expectedTotalBytes!
-  //               : null,
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
 }

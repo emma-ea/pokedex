@@ -1,61 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import './pokemons.dart';
-import './fav_pokemon.dart';
-import '../scoped_model/model.dart';
+import '/utils/extensions.dart';
+import '/utils/constants.dart';
+import '/utils/display_state.dart';
+import '/core/data/local/local_store.dart';
+import '/core/scoped_model/main.dart';
+import '/core/widgets/custom_tab_bar.dart';
+import '/core/widgets/app_divider.dart';
+import './pokedex.dart';
+import './fav_pokedex.dart';
+
+import '/services/locator.dart' as inject;
 
 class HomePage extends StatefulWidget {
-  const HomePage({required this.model, super.key});
-
-  final PokeDataModel model;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final List<Widget> screens = const [Pokemons(), FavPokemon()];
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  List<Widget> screens = [const Pokemons(), FavPokemon()];
+
+  DisplayState currentDisplayState = DisplayState.allPokemons;
+  var model = inject.gi<MainScopeModel>();
 
   @override
   void initState() {
     super.initState();
-    widget.model.fetchPokemons();
+    model.fetchPokemons(model.uri);
+    // initialize hive box
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initPrefs();
+    });
+  }
+
+  initPrefs() async {
+    var preferences = await Preferences.getInstance();
+    model.setPreferences(preferences);
+    model.getFavourites();
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
   }
 
   int _selectedIndex = 0;
 
-  void _selectNavTab(int idx) => setState(() {
-    _selectedIndex = idx;
-  });
+  void _selectNavTab(int idx) => setState(() {_selectedIndex = idx;});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: _bottomNavigatorItems
-            .map((item) => BottomNavigationBarItem(
-                icon: Icon(item.icon),
-                activeIcon: Icon(item.activeIcon),
-                label: item.label))
-            .toList(),
-        currentIndex: _selectedIndex,
-        onTap: _selectNavTab,
+    return WillPopScope(
+      onWillPop: () async {
+        if (_selectedIndex != 0) {
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(125),
+          child: _buildAppBar(),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: screens,
+          ),
+        ),
       ),
     );
   }
-}
 
-const _bottomNavigatorItems = <_Item>[
-  _Item('Pokemons', icon: Icons.toys_outlined, activeIcon: Icons.toys),
-  _Item('Favourite', icon: Icons.toys_outlined, activeIcon: Icons.toys),
-];
-
-class _Item {
-  final String label;
-  final IconData icon, activeIcon;
-  const _Item(this.label, {required this.icon, required this.activeIcon});
+  Widget _buildAppBar() {
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/images/pokedex_logo.svg',
+                height: 24,
+                width: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                AppInfo.title,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ).space(top: 10, bottom: 5),
+          const AppDivider(
+            thickness: 3,
+          ),
+          ScopedModelDescendant<MainScopeModel>(
+            builder: (context, _, model) => CustomTabBar(
+              favoritePokemonsCount: model.favouriteCount,
+              width: MediaQuery.of(context).size.width,
+              onTapped: (DisplayState displayState) {
+                if (displayState == DisplayState.favoritePokemons) {
+                  _selectNavTab(1);
+                } else {
+                  _selectNavTab(0);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

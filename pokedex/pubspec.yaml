@@ -14,20 +14,43 @@ dependencies:
 
   http: ^0.13.5
   scoped_model: ^2.0.0
-  flutter_native_splash: ^2.2.10+1
-
+  cached_network_image: ^3.2.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  connectivity_plus: ^2.3.9
+  flutter_svg: ^1.1.5
+  get_it: ^7.2.0
 
   cupertino_icons: ^1.0.2
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^5.3.2
+  build_runner: ^2.3.0
 
   flutter_lints: ^2.0.0
 
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/noto/regular.ttf
+        - asset: assets/fonts/noto/medium.ttf
+          weight: 500
+
+        - asset: assets/fonts/noto/semibold.ttf
+          weight: 600
+        
+        - asset: assets/fonts/noto/bold.ttf
+          weight: 700
 
 
 analyzer:

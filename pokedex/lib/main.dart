@@ -3,27 +3,37 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'core/ui/home.dart';
 import 'core/scoped_model/main.dart';
+import 'core/ui/pokedex_detail.dart';
+import 'core/ui/splash_screen.dart';
+import 'utils/constants.dart';
 
-void main() {
-  runApp(PokedexApp());
+import 'services/locator.dart' as inject;
+
+void main() async {
+  await inject.setup();
+  runApp(const PokedexApp());
 }
 
 class PokedexApp extends StatelessWidget {
-  PokedexApp({super.key});
-
-  final MainScopeModel _model = MainScopeModel();
+  const PokedexApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Pokedex',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ScopedModel<MainScopeModel>(
-        model: _model,
-        child: HomePage(model:_model),
+    return ScopedModel<MainScopeModel>(
+      model: inject.gi<MainScopeModel>(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: AppInfo.title,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          fontFamily: 'NotoSans'
+        ),
+        initialRoute: AppRoutes.splash,
+        routes: {
+          AppRoutes.splash:(context) => const SplashScreen(),
+          AppRoutes.home: (context) => const HomePage(),
+          AppRoutes.detail: (context) => const PokeDetailScreen(),
+        },
       ),
     );
   }

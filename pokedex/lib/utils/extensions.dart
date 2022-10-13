@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-extension Layout on Widget {
+extension CapExtension on String {
+  String get inCaps => "${this[0].toUpperCase()}${substring(1)}";
+  String get capitalizeFirstofEach =>
+      split(RegExp("[ -,]")).map((str) => str.inCaps).join(", ");
+}
+
+extension LayoutWidgets on Widget {
   space({
     double left = 0.0,
     double right = 0.0,
@@ -11,5 +17,16 @@ extension Layout on Widget {
       padding: EdgeInsets.fromLTRB(left, top, right, bottom),
       child: this,
     );
+  }
+}
+
+extension ColorBrightness on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
   }
 }

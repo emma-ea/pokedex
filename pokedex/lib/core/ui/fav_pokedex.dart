@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/scoped_model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../utils/constants.dart';
+import '/core/scoped_model/main.dart';
+import '/utils/route_arguments.dart';
+import '/utils/constants.dart';
 import '../widgets/pokedex_card.dart';
-import 'pokedex_detail.dart';
 
 class FavPokemon extends StatelessWidget {
   FavPokemon({super.key});
@@ -23,28 +23,31 @@ class FavPokemon extends StatelessWidget {
               child: Text(AppInfo.noFavourites),
             );
           } else {
-            return GridView.builder(
-              key: const PageStorageKey(0),
-              controller: _scrollController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: model.favouriteCount,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: deviceDisplay ? 6 : 3,
-                  crossAxisSpacing: 10,
-                  mainAxisExtent: 220),
-              itemBuilder: (context, index) {
-                // return PokedexCard(pokedex: model.favourites[index]);
-                return GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PokeDetailScreen(model,
-                              pokedex: model.favourites.elementAt(index)))),
-                  child: PokedexCard(
-                    pokedex: model.favourites.elementAt(index),
-                  ),
-                );
-              },
+            return Container(
+              color: Colors.grey.shade200,
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: GridView.builder(
+                key: const PageStorageKey(0),
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                itemCount: model.favouriteCount,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: deviceDisplay ? 6 : 3,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 220),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context,
+                        AppRoutes.detail,
+                        arguments: RouteArgs(model.favourites.elementAt(index))
+                                ),
+                    child: PokedexCard(
+                      pokedex: model.favourites.elementAt(index),
+                    ),
+                  );
+                },
+              ),
             );
           }
         },

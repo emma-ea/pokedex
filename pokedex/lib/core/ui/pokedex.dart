@@ -1,15 +1,11 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/scoped_model/model.dart';
-import 'package:pokedex/utils/format_pokedex_opts.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../utils/api_response.dart';
-import '../model/pokedex_detail.dart';
+import '/utils/constants.dart';
+import '/utils/route_arguments.dart';
+import '/utils/api_response.dart';
 import '../widgets/pokedex_card.dart';
 import '../scoped_model/main.dart';
-import 'pokedex_detail.dart';
 
 class Pokemons extends StatefulWidget {
   const Pokemons({super.key});
@@ -26,7 +22,6 @@ class _PokemonsState extends State<Pokemons> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print("end");
         requestNextBatch();
       }
     });
@@ -46,27 +41,31 @@ class _PokemonsState extends State<Pokemons> {
   bool get _deviceDisplay => MediaQuery.of(context).size.width > 600;
 
   Widget _buildListView(data, model) {
-    return GridView.builder(
-      key: const PageStorageKey(0),
-      controller: _scrollController,
-      physics: const BouncingScrollPhysics(),
-      itemCount: data.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _deviceDisplay ? 6 : 3,
-          crossAxisSpacing: 10,
-          mainAxisExtent: 220),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () => Navigator.push(
+    return Container(
+      color: Colors.grey.shade200,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: GridView.builder(
+        key: const PageStorageKey(0),
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(),
+        itemCount: data.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _deviceDisplay ? 6 : 3,
+            crossAxisSpacing: 10,
+            mainAxisExtent: 220),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PokeDetailScreen(model, pokedex: data.elementAt(index)))),
-          child: PokedexCard(
-            pokedex: data.elementAt(index),
-          ),
-        );
-      },
+              AppRoutes.detail,
+              arguments: RouteArgs(data.elementAt(index)),
+            ),
+            child: PokedexCard(
+              pokedex: data.elementAt(index),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -76,13 +75,11 @@ class _PokemonsState extends State<Pokemons> {
         builder: ((context, child, model) {
       var dexResponse = model.pokedexResponse;
       if (dexResponse.status == Status.error) {
-        print("----error----");
         return Center(
           child: Text(dexResponse.msg),
         );
       }
       if (dexResponse.status == Status.loading) {
-        print("----loading----");
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -109,7 +106,6 @@ class _PokemonsState extends State<Pokemons> {
         );
       }
       if (dexResponse.status == Status.nextLoading) {
-        print("----next loading----");
         var data = model.allPokedex;
         return Stack(
           children: [
@@ -123,10 +119,6 @@ class _PokemonsState extends State<Pokemons> {
       }
       if (dexResponse.status == Status.completed &&
           dexResponse.data.isNotEmpty) {
-        print("----completed----");
-        // data = SplayTreeSet.from(
-        //    data, (PokedexDetail a, PokedexDetail b) => a.id.compareTo(b.id));
-        // data.sort((a, b) => a.id.compareTo(b.id));
         return _buildListView(dexResponse.data, model);
       }
       return Container(

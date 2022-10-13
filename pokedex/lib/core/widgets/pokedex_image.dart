@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/model/pokedex_detail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PokedexImageWidget extends StatelessWidget {
@@ -25,7 +24,6 @@ class PokedexImageWidget extends StatelessWidget {
       fit: BoxFit.fill,
       progressIndicatorBuilder: (context, info,
           loadingProgress) {
-        // if (loadingProgress == null) return child;
         return Center(
           child: CircularProgressIndicator(
             value: loadingProgress.totalSize != null
@@ -42,28 +40,4 @@ class PokedexImageWidget extends StatelessWidget {
       },
     );
   }
-
-  // _buildPokeImage(url) {
-  //   return Image.network(
-  //     url,
-  //     fit: BoxFit.fill,
-  //     loadingBuilder: (BuildContext context, Widget child,
-  //         ImageChunkEvent? loadingProgress) {
-  //       if (loadingProgress == null) return child;
-  //       return Center(
-  //         child: CircularProgressIndicator(
-  //           value: loadingProgress.expectedTotalBytes != null
-  //               ? loadingProgress.cumulativeBytesLoaded /
-  //                   loadingProgress.expectedTotalBytes!
-  //               : null,
-  //         ),
-  //       );
-  //     },
-  //     errorBuilder: (context, error, stackTrace) {
-  //       return const Center(
-  //         child: Text("Failed to retrieve\nimage"),
-  //       );
-  //     },
-  //   );
-  // }
 }

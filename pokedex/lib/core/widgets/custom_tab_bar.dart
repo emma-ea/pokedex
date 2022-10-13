@@ -125,6 +125,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
               AnimatedPositioned(
                 left: left,
                 right: right,
+                duration: const Duration(milliseconds: 400),
                 // width: widget.width / 2,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
@@ -136,7 +137,6 @@ class _CustomTabBarState extends State<CustomTabBar> {
                     ),
                   ),
                 ),
-                duration: const Duration(milliseconds: 400),
                 // curve: Curves.,
               )
             ],
