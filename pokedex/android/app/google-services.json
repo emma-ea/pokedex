@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "193890507369",
+    "project_id": "pokedex-f7f59",
+    "storage_bucket": "pokedex-f7f59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193890507369:android:7a277108d4dabae0c560f8",
+        "android_client_info": {
+          "package_name": "com.emma_ea.pokedex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193890507369-72qh5jdupldvnfn0jaqpp7il067v3evg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlh8SSNDoqVclNDSM4x9lCtvetHdSnK3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193890507369-72qh5jdupldvnfn0jaqpp7il067v3evg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "193890507369-12j8akjuru3tpb3fedf8rnhuci6vc9pc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.emmaea.pokedex"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

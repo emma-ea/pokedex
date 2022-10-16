@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/services/firebase_analytics.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'core/ui/home.dart';
@@ -29,6 +30,7 @@ class PokedexApp extends StatelessWidget {
           fontFamily: 'NotoSans'
         ),
         initialRoute: AppRoutes.splash,
+        navigatorObservers: [inject.gi<FirebaseAnalyticsService>().observer],
         routes: {
           AppRoutes.splash:(context) => const SplashScreen(),
           AppRoutes.home: (context) => const HomePage(),
