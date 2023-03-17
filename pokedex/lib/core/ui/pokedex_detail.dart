@@ -246,7 +246,7 @@ class _PokeDetailScreenState extends State<PokeDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (var s in pokedexStats)
-            _buildStatsLevel(s.name.capitalizeFirstofEach, s.baseStats),
+            _buildStatsLevel(s.name.capitalizeStats, s.baseStats),
           _buildStatsLevel("Average Power", avgPower),
           const SizedBox(
             height: 30,

@@ -4,6 +4,7 @@ extension CapExtension on String {
   String get inCaps => "${this[0].toUpperCase()}${substring(1)}";
   String get capitalizeFirstofEach =>
       split(RegExp("[ -,]")).map((str) => str.inCaps).join(", ");
+  String get capitalizeStats => split("-").map((str) => str.inCaps).join(" ");
 }
 
 extension LayoutWidgets on Widget {
