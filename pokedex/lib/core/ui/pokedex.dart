@@ -76,7 +76,19 @@ class _PokemonsState extends State<Pokemons> {
       var dexResponse = model.pokedexResponse;
       if (dexResponse.status == Status.error) {
         return Center(
-          child: Text(dexResponse.msg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(dexResponse.msg),
+              ElevatedButton(
+                  onPressed: () {
+                    model.fetchPokemons(model.uri);
+                  },
+                  child: const Text("Retry"),
+              ),
+            ],
+          ),
         );
       }
       if (dexResponse.status == Status.loading) {
