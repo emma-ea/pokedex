@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emma_ea.pokedex">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
-        android:label="pokedex"
+        android:label="Pokedex"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/pokedex_app_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
